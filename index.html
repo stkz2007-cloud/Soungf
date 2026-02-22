@@ -71,17 +71,21 @@ function joinRoom(){
   playerName = document.getElementById("name").value.trim()
   if(!playerName) return alert("ใส่ชื่อก่อน")
 
-  if(!isHost){  // ✅ อ่าน roomInput เฉพาะตอน join จริงๆ
+  if(!isHost){
     roomCode = document.getElementById("roomInput").value.toUpperCase()
+    if(!roomCode) return alert("ใส่รหัสห้องก่อน")
+    roomRef = db.ref("rooms/" + roomCode)  // ✅ สำคัญมาก
   }
- roomRef.child("players/"+playerId).set({
-   name:playerName,
-   score:0
- })
 
- roomRef.child("players/"+playerId).onDisconnect().remove()
- listenRoom()
+  roomRef.child("players/"+playerId).set({
+    name: playerName,
+    score: 0
+  })
+
+  roomRef.child("players/"+playerId).onDisconnect().remove()
+  listenRoom()
 }
+
 
 // ================= LISTEN =================
 
